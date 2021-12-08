@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="top.sellet.mapper.MovieMapper">
+    <resultMap id="MovieMapperMap" type="top.sellet.entity.Movie">
+        <id column="id" property="id"/>
+        <result column="title" property="title" />
+        <result column="cover" property="cover" />
+        <result column="rate" property="rate" />
+        <result column="casts" property="casts" />
+        <result column="directors" property="directors"/>
+    </resultMap>
+    <insert id="insert"  keyProperty="id" parameterType="top.sellet.entity.Movie">
+        insert into movie(id,title,cover,rate,casts,directors)
+        values
+        (#{id},#{title},#{cover},#{rate},#{casts},#{directors})
+    </insert>
+    <select id="findAll" resultMap="MovieMapperMap">
+        select * from movie
+    </select>
+
+</mapper>
