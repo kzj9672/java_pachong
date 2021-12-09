@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class HttpClientTest {
     public static void main(String[] args) {
-        //创建HTTPclient 相当于打开一个浏览器
+        //创建HTTPclient 相当于打开一个浏览器解析
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response =null;
         //创建get请求，详单与在浏览器地址栏输入网址
