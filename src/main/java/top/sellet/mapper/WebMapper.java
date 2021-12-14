@@ -1,22 +1,25 @@
 package top.sellet.mapper;
 
-import top.sellet.entity.Movie;
+import top.sellet.entity.ImageWeb;
 
 import java.util.List;
 
 /**
  * @author mo
  */
-public interface MovieMapper {
+
+public interface WebMapper {
     /**
      * 爬到的数据插入数据库
-     * @param movie
+     * @param  name
+     * @param address
      */
-    void insert(Movie movie);
 
+    void insert(String name,String address);
     /**
      * 查询所有
      * @return
      */
-    List<Movie> findAll();
+
+    List<ImageWeb> findAll();
 }

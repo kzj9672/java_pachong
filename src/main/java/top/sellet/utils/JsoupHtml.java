@@ -1,17 +1,16 @@
 package top.sellet.utils;
 
-import com.alibaba.fastjson.JSONObject;
+
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
+
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.HttpClientUtils;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author mo
@@ -62,19 +62,20 @@ public class JsoupHtml {
                 Document document = Jsoup.parse(html);
                 //通过标签获取title
                 //System.out.print(document.getElementsByTag("title").first());
+
                 //通过id获取文章列表元素对象
                 Element postList = document.getElementById("post-list");
                 Elements postItems = postList.getElementsByClass("post-list-item");
                 int size = postItems.size();
-                System.out.println("抓取到："+size+"个目标资源");
+                System.out.println("抓取到：" + size + "个目标资源");
                 System.out.println("---------------------------------------");
                 int i = 0;
                 //遍历
                 for (Element postItem : postItems) {
-                    i=i+1;
-                    System.out.println("第"+i+"个目标资源");
+                    i = i + 1;
+                    System.out.println("第" + i + "个目标资源");
                     //获取文章标题元素
-                    Elements titleEle = postItem.select(".post-info h2 a[target='_blank']");
+                    Elements titleEle = postItem.select(".post-info h2 a[href^='https']");
                     String imageHtml = titleEle.attr("href");
                     String text = titleEle.text();
                     System.out.println("文章标题:" + text);
@@ -84,7 +85,8 @@ public class JsoupHtml {
                 }
             } else {
                 //如果不是200根据情况做处理
-                System.out.print("返回状态不是200");
+                int statusCode = response.getStatusLine().getStatusCode();
+                System.out.println("返回的状态码"+statusCode);
                 System.out.print(EntityUtils.toString(response.getEntity(), "utf-8"));
 
             }
@@ -99,7 +101,6 @@ public class JsoupHtml {
 
     /**
      * 解析每个文章的所有图片
-     *
      */
     public void getImageUrl(String url, String title) throws Exception {
         HttpGet httpGet = new HttpGet(url);
@@ -117,7 +118,7 @@ public class JsoupHtml {
                 Element primaryHome = document.getElementById("primary-home");
                 Elements elements = primaryHome.getElementsByClass("entry-content");
                 String replace = null;
-                File file = new File("E:\\pic\\");
+                File file = new File("E:\\pic\\dongtimimi.com\\");
                 if (title.contains("/") || title.contains(":")) {
                     String newTitle = title.replace("/", "-");
                     replace = newTitle.replace(":", "_");
@@ -134,6 +135,10 @@ public class JsoupHtml {
                     }
                 } else {
                     System.out.println("文件夹已存在");
+                    int length = Objects.requireNonNull(file.listFiles()).length;
+                    if (length==0) {
+                        file.delete();
+                    }
                     return;
                 }
                 String startData = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -144,8 +149,9 @@ public class JsoupHtml {
                     int i = 0;
                     for (Element element1 : select) {
                         String src = element1.attr("src");
-                        picDownload.imageDownload(title, src, file);
                         i = i + 1;
+                        picDownload.imageDownload(url, src, file,i);
+
                         System.out.println("第" + i + "张图片下载完成");
                         Thread.sleep(1000);
                     }

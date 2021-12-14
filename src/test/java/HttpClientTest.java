@@ -21,7 +21,7 @@ public class HttpClientTest {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response =null;
         //创建get请求，详单与在浏览器地址栏输入网址
-        HttpGet request = new HttpGet("https://www.moe17.com/category/cos/");
+        HttpGet request = new HttpGet("https://dongtimimi.com/tu");
         //设置请求头，反反爬虫机制
         request.setHeader("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Mobile Safari/537.36");
         //如果ip被封
@@ -46,13 +46,13 @@ public class HttpClientTest {
                 //遍历
                 for (Element postItem : postItems) {
                     //获取文章标题元素
-                    Elements titleEle = postItem.select(".post-info h2 a[target='_blank']");
+                    Elements titleEle = postItem.select(".post-info h2 a[href^='https']");
                     System.out.println("文章标题:"+titleEle.text());
                     System.out.println("文章地址:"+titleEle.attr("href"));
                     //获取图片
                     Elements pic = postItem.select(".post-thumb");
-                    System.out.println("图片的标题"+pic.attr("alt"));
-                    System.out.println("图片的地址"+pic.attr("src"));
+                    System.out.println("图片的标题:"+pic.attr("alt"));
+                    System.out.println("图片的地址:"+pic.attr("src"));
 
                     System.out.println("**********************************************");
 
