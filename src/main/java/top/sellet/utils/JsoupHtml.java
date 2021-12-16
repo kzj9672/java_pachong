@@ -11,6 +11,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.HttpClientUtils;
 
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,7 +38,7 @@ public class JsoupHtml {
     }
 
     public void setHttpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
+        this.httpClient =httpClient;
     }
 
     public void getHtmlUrl(String url) throws Exception {
@@ -147,13 +148,20 @@ public class JsoupHtml {
                     PicDownload picDownload = new PicDownload();
                     Elements select = element.select(".entry-content img");
                     int i = 0;
+                    String src;
                     for (Element element1 : select) {
-                        String src = element1.attr("src");
+                        src = element1.attr("data-src");
+                        if (src.isEmpty()){
+                            src = element1.attr("data-cfsrc");
+                        }
+                        if (src.isEmpty()){
+                            src = element1.attr("src");
+                        }
                         i = i + 1;
                         picDownload.imageDownload(url, src, file,i);
 
                         System.out.println("第" + i + "张图片下载完成");
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     }
                     //当前线程休眠5秒，避免过高频率爬取被封
                     Thread.sleep(5000);

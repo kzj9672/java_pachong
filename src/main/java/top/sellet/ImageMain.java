@@ -11,8 +11,8 @@ import top.sellet.utils.JsoupHtml;
 public class ImageMain {
     public static void main(String[] args) throws Exception {
         JsoupHtml jsoupHtml = new JsoupHtml();
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.createSystem();
         jsoupHtml.setHttpClient(httpClient);
-        jsoupHtml.getHtmlUrl("https://dongtimimi.com/tu/cos");
+        jsoupHtml.getHtmlUrl("https://dongtimimi.com/tu/cos/page/4");
     }
 }
